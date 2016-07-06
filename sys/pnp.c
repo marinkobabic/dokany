@@ -46,7 +46,7 @@ DokanDispatchPnp(__in PDEVICE_OBJECT DeviceObject, __in PIRP Irp) {
       break;
     case IRP_MN_QUERY_DEVICE_RELATIONS:
       DDbgPrint("  IRP_MN_QUERY_DEVICE_RELATIONS\n");
-      status = QueryDeviceRelations(DeviceObject, Irp);
+      status = STATUS_NOT_IMPLEMENTED;
       break;
     default:
       DDbgPrint("   other minnor function %d\n", irpSp->MinorFunction);
