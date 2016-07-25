@@ -75,7 +75,17 @@ extern LOOKASIDE_LIST_EX g_DokanFCBLookasideList;
 #ifdef ExAllocatePool
 #undef ExAllocatePool
 #endif
+#if _WIN32_WINNT >= _WIN32_WINNT_WIN8
+#define ExAllocatePool(size) ExAllocatePoolWithTag(NonPagedPoolNx, size, TAG)
+#else
 #define ExAllocatePool(size) ExAllocatePoolWithTag(NonPagedPool, size, TAG)
+#endif
+
+#if _WIN32_WINNT >= _WIN32_WINNT_WIN8
+#define MmGetSystemAddressForMdlNormalSafe(mdl) MmGetSystemAddressForMdlSafe(mdl,NormalPagePriority|MdlMappingNoExecute)
+#else
+#define MmGetSystemAddressForMdlNormalSafe(mdl) MmGetSystemAddressForMdlSafe(mdl,NormalPagePriority)
+#endif
 
 #define DRIVER_CONTEXT_EVENT 2
 #define DRIVER_CONTEXT_IRP_ENTRY 3
@@ -249,7 +259,7 @@ typedef struct _DokanDiskControlBlock {
   ULONG MountId;
   ULONG Flags;
   LARGE_INTEGER TickCount;
-  LONG TempFileId;
+  
   CACHE_MANAGER_CALLBACKS CacheManagerCallbacks;
   CACHE_MANAGER_CALLBACKS CacheManagerNoOpCallbacks;
 
@@ -344,7 +354,7 @@ typedef struct _DokanContextControlBlock {
   ULONG SearchPatternLength;
 
   ULONG Flags;
-  LONG TempFileId;
+  
   int FileCount;
   ULONG MountId;
 } DokanCCB, *PDokanCCB;

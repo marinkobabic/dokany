@@ -26,6 +26,8 @@ DokanDispatchPnp(__in PDEVICE_OBJECT DeviceObject, __in PIRP Irp) {
   PIO_STACK_LOCATION irpSp;
   NTSTATUS status = STATUS_SUCCESS;
 
+  UNREFERENCED_PARAMETER(DeviceObject);
+
   __try {
     DDbgPrint("==> DokanPnp\n");
 

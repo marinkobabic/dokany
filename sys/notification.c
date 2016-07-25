@@ -540,9 +540,6 @@ NTSTATUS DokanGlobalEventRelease(__in PDEVICE_OBJECT DeviceObject,
         return STATUS_BUFFER_TOO_SMALL;
     }
 
-    PDEVICE_OBJECT vcbDeviceObject = mountEntry->MountControl.DeviceObject;
-    PDokanVCB vcb = vcbDeviceObject ? vcbDeviceObject->DeviceExtension : NULL;
-
     if (IsDeletePending(mountEntry->MountControl.DeviceObject)) {
         DDbgPrint("Device is deleted\n")
         return STATUS_DEVICE_REMOVED;

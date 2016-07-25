@@ -133,8 +133,13 @@ DokanFilterCallbackAcquireForCreateSection(__in PFS_FILTER_CALLBACK_DATA
 
 BOOLEAN
 DokanLookasideCreate(LOOKASIDE_LIST_EX *pCache, size_t cbElement) {
-  NTSTATUS Status = ExInitializeLookasideListEx(
-      pCache, NULL, NULL, NonPagedPool, 0, cbElement, TAG, 0);
+#if _WIN32_WINNT > 0x601
+    NTSTATUS Status = ExInitializeLookasideListEx(
+        pCache, NULL, NULL, NonPagedPoolNx, 0, cbElement, TAG, 0);
+#else
+    NTSTATUS Status = ExInitializeLookasideListEx(
+        pCache, NULL, NULL, NonPagedPool, 0, cbElement, TAG, 0);
+#endif
 
   if (!NT_SUCCESS(Status)) {
     DDbgPrint("ExInitializeLookasideListEx failed, Status (0x%x)", Status);
@@ -237,9 +242,13 @@ Return Value:
   fastIoDispatch->MdlWriteComplete = FsRtlMdlWriteCompleteDev;
 
   DriverObject->FastIoDispatch = fastIoDispatch;
-
-  ExInitializeNPagedLookasideList(&DokanIrpEntryLookasideList, NULL, NULL, 0,
+#if _WIN32_WINNT >= _WIN32_WINNT_WIN8
+  ExInitializeNPagedLookasideList(&DokanIrpEntryLookasideList, NULL, NULL, POOL_NX_ALLOCATION,
                                   sizeof(IRP_ENTRY), TAG, 0);
+#else
+  ExInitializeNPagedLookasideList(&DokanIrpEntryLookasideList, NULL, NULL, 0,
+      sizeof(IRP_ENTRY), TAG, 0);
+#endif
 
 #if _WIN32_WINNT < 0x0501
   RtlInitUnicodeString(&functionName, L"FsRtlTeardownPerStreamContexts");

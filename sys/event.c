@@ -539,13 +539,13 @@ DokanEventStart(__in PDEVICE_OBJECT DeviceObject, __in PIRP Irp) {
 
   DOKAN_CONTROL dokanControl;
   RtlZeroMemory(&dokanControl, sizeof(dokanControl));
-  RtlStringCchCopyW(&dokanControl.MountPoint, MAXIMUM_FILENAME_LENGTH, L"\\DosDevices\\");
-  if (eventStart.MountPoint && wcslen(&eventStart.MountPoint) == 1) {
+  RtlStringCchCopyW(dokanControl.MountPoint, MAXIMUM_FILENAME_LENGTH, L"\\DosDevices\\");
+  if (&eventStart.MountPoint && wcslen(eventStart.MountPoint) == 1) {
       dokanControl.MountPoint[12] = towupper(eventStart.MountPoint[0]);
       dokanControl.MountPoint[13] = L':';
       dokanControl.MountPoint[14] = L'\0';
   } else {
-      RtlStringCchCatW(&dokanControl.MountPoint, MAXIMUM_FILENAME_LENGTH, &eventStart.MountPoint);
+      RtlStringCchCatW(dokanControl.MountPoint, MAXIMUM_FILENAME_LENGTH, eventStart.MountPoint);
   }
 
   DDbgPrint("  Checking for MountPoint %ls \n", dokanControl.MountPoint);
@@ -731,7 +731,7 @@ DokanEventWrite(__in PDEVICE_OBJECT DeviceObject, __in PIRP Irp) {
       //			eventIrpSp->Parameters.DeviceIoControl.OutputBufferLength);
       if (Irp->MdlAddress)
         buffer =
-            MmGetSystemAddressForMdlSafe(Irp->MdlAddress, NormalPagePriority);
+            MmGetSystemAddressForMdlNormalSafe(Irp->MdlAddress);
       else
         buffer = Irp->AssociatedIrp.SystemBuffer;
 

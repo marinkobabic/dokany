@@ -84,7 +84,6 @@ VOID DokanUnmount(__in PDokanDCB Dcb) {
 
 VOID DokanCheckKeepAlive(__in PDokanDCB Dcb) {
   LARGE_INTEGER tickCount;
-  ULONG mounted;
   PDokanVCB vcb;
 
   // DDbgPrint("==> DokanCheckKeepAlive\n");

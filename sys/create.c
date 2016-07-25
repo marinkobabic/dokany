@@ -174,7 +174,11 @@ DokanFreeFCB(__in PDokanFCB Fcb) {
     InitializeListHead(&Fcb->NextCCB);
 
     DDbgPrint("  Free FCB:%p\n", Fcb);
+    
     ExFreePool(Fcb->FileName.Buffer);
+    Fcb->FileName.Buffer = NULL;
+    Fcb->FileName.Length = 0;
+    Fcb->FileName.MaximumLength = 0;
 
     FsRtlUninitializeOplock(DokanGetFcbOplock(Fcb));
 
@@ -214,12 +218,12 @@ PDokanCCB DokanAllocateCCB(__in PDokanDCB Dcb, __in PDokanFCB Fcb) {
   ASSERT(Fcb != NULL);
 
   RtlZeroMemory(ccb, sizeof(DokanCCB));
-  InterlockedIncrement(&Dcb->TempFileId);
+  
   ccb->Identifier.Type = CCB;
   ccb->Identifier.Size = sizeof(DokanCCB);
-  ccb->TempFileId = Dcb->TempFileId;
+  
   ccb->Fcb = Fcb;
-  DDbgPrint("   Allocated CCB with id %lu \n", Dcb->TempFileId);
+  DDbgPrint("   Allocated CCB \n");
   ExInitializeResourceLite(&ccb->Resource);
 
   InitializeListHead(&ccb->NextCCB);
@@ -252,7 +256,7 @@ DokanFreeCCB(__in PDokanCCB ccb) {
   KeEnterCriticalRegion();
   ExAcquireResourceExclusiveLite(&fcb->Resource, TRUE);
 
-  DDbgPrint("   Free CCB with id %lu \n", ccb->TempFileId);
+  DDbgPrint("   Free CCB \n");
 
   if (IsListEmpty(&ccb->NextCCB)) {
       DDbgPrint("  WARNING. &ccb->NextCCB is empty. \n This should never happen, so check the behavior.\n Would produce BSOD \n")
@@ -1338,6 +1342,7 @@ VOID DokanCompleteCreate(__in PIRP_ENTRY IrpEntry,
     ExReleaseResourceLite(&fcb->Resource);
     KeLeaveCriticalRegion();
     DokanFreeFCB(fcb);
+    IrpEntry->FileObject->FsContext2 = NULL;
   }
 
   DokanCompleteIrpRequest(irp, status, info);
