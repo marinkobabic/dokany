@@ -891,7 +891,7 @@ DiskDeviceControlWithLock(__in PDEVICE_OBJECT DeviceObject, __in PIRP Irp) {
   return status;
 }
 
-VOID
+NTSTATUS
 DokanDispatchDeviceControl(__in PDEVICE_OBJECT DeviceObject, __in PIRP Irp)
 
 /*++
@@ -1037,4 +1037,6 @@ Return Value:
       DDbgPrint("<== DokanDispatchIoControl\n");
     }
   }
+
+  return status;
 }

@@ -444,60 +444,60 @@ __drv_dispatchType(IRP_MJ_CREATE) __drv_dispatchType(IRP_MJ_CLOSE)
                                             IRP_MJ_SET_SECURITY) NTSTATUS
     DokanBuildRequest(__in PDEVICE_OBJECT DeviceObject, __in PIRP Irp);
 
-VOID
+NTSTATUS
 DokanDispatchClose(__in PDEVICE_OBJECT DeviceObject, __in PIRP Irp);
 
-VOID
+NTSTATUS
 DokanDispatchCreate(__in PDEVICE_OBJECT DeviceObject, __in PIRP Irp);
 
-VOID
+NTSTATUS
 DokanDispatchRead(__in PDEVICE_OBJECT DeviceObject, __in PIRP Irp);
 
-VOID
+NTSTATUS
 DokanDispatchWrite(__in PDEVICE_OBJECT DeviceObject, __in PIRP Irp);
 
-VOID
+NTSTATUS
 DokanDispatchFlush(__in PDEVICE_OBJECT DeviceObject, __in PIRP Irp);
 
-VOID
+NTSTATUS
 DokanDispatchQueryInformation(__in PDEVICE_OBJECT DeviceObject, __in PIRP Irp);
 
-VOID
+NTSTATUS
 DokanDispatchSetInformation(__in PDEVICE_OBJECT DeviceObject, __in PIRP Irp);
 
-VOID
+NTSTATUS
 DokanDispatchQueryVolumeInformation(__in PDEVICE_OBJECT DeviceObject,
                                     __in PIRP Irp);
 
-VOID
+NTSTATUS
 DokanDispatchSetVolumeInformation(__in PDEVICE_OBJECT DeviceObject,
                                   __in PIRP Irp);
 
-VOID
+NTSTATUS
 DokanDispatchDirectoryControl(__in PDEVICE_OBJECT DeviceObject, __in PIRP Irp);
 
-VOID
+NTSTATUS
 DokanDispatchFileSystemControl(__in PDEVICE_OBJECT DeviceObject, __in PIRP Irp);
 
-VOID
+NTSTATUS
 DokanDispatchDeviceControl(__in PDEVICE_OBJECT DeviceObject, __in PIRP Irp);
 
-VOID
+NTSTATUS
 DokanDispatchLock(__in PDEVICE_OBJECT DeviceObject, __in PIRP Irp);
 
-VOID
+NTSTATUS
 DokanDispatchCleanup(__in PDEVICE_OBJECT DeviceObject, __in PIRP Irp);
 
-VOID
+NTSTATUS
 DokanDispatchShutdown(__in PDEVICE_OBJECT DeviceObject, __in PIRP Irp);
 
-VOID
+NTSTATUS
 DokanDispatchQuerySecurity(__in PDEVICE_OBJECT DeviceObject, __in PIRP Irp);
 
-VOID
+NTSTATUS
 DokanDispatchSetSecurity(__in PDEVICE_OBJECT DeviceObject, __in PIRP Irp);
 
-VOID
+NTSTATUS
 DokanDispatchPnp(__in PDEVICE_OBJECT DeviceObject, __in PIRP Irp);
 
 NTSTATUS

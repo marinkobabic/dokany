@@ -21,7 +21,7 @@ with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "dokan.h"
 
-VOID
+NTSTATUS
 DokanDispatchClose(__in PDEVICE_OBJECT DeviceObject, __in PIRP Irp)
 
 /*++
@@ -147,4 +147,6 @@ Return Value:
 
     DDbgPrint("<== DokanClose\n");
   }
+
+  return status;
 }

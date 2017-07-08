@@ -672,7 +672,7 @@ VOID DokanInitVpb(__in PVPB Vpb, __in PDEVICE_OBJECT VolumeDevice) {
   }
 }
 
-VOID
+NTSTATUS
 DokanDispatchFileSystemControl(__in PDEVICE_OBJECT DeviceObject,
                                __in PIRP Irp) {
   NTSTATUS status = STATUS_INVALID_PARAMETER;
@@ -719,4 +719,6 @@ DokanDispatchFileSystemControl(__in PDEVICE_OBJECT DeviceObject,
 
     DDbgPrint("<== DokanFileSystemControl\n");
   }
+
+  return status;
 }
