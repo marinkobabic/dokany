@@ -432,7 +432,7 @@ DiskDeviceControl(__in PDEVICE_OBJECT DeviceObject, __in PIRP Irp) {
       DDbgPrint("  DeviceName %wZ\n", deviceName);
     } else {
       Irp->IoStatus.Information = sizeof(MOUNTDEV_NAME);
-      status = STATUS_BUFFER_OVERFLOW;
+      status = STATUS_BUFFER_TOO_SMALL;
     }
   } break;
   case IOCTL_MOUNTDEV_QUERY_UNIQUE_ID: {
